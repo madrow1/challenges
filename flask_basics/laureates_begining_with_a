@@ -1,0 +1,26 @@
+# importing basic modules for functionality 
+import csv 
+import json 
+
+# Create an empty list to be dumped into the json later
+begins_with_a = []
+
+# Open and import laureates.csv in readonly mode to file object, the create a list based on it 
+with open("laureates.csv", "r") as f: 
+    reader = csv.DictReader(f)
+    laureates = list(reader)
+
+# Create a food loop to iterate over every entry in the laureates list
+for laureate in laureates:
+    # Assign each laureate to the variable $name as the for loop iterates
+    # This could also be achieved with laureate["name"][0] which skips the variable and is way cleaner
+    name = laureate["name"]
+    # Use a boolean operator to match whether the 0 index of each entry in the list matches "a"
+    if name[0].lower() == "a":
+        # if it does append it to the "begins_with_a, if it doesn't ignore it.
+        begins_with_a.append(laureate)
+
+# open the file "begins_with_a.json" as writeable with f object
+# dump contents of begins_with_a to json file
+with open("begins_with_a.json", "w") as f:
+    json.dump(begins_with_a, f, indent=2)

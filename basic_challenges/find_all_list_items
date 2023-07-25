@@ -1,0 +1,16 @@
+list = [[1,2],3,4,5,6,2,1,2,4,5]
+
+# Takes two parameters, the variable list and the user created search tern
+def return_index(list, search_term):
+    # Initialises an empty list for matching indexes to be added to
+    index = []
+    for i in range(len(list)):
+        # Uses a boolean operator to match the search_term to the list objects
+        if list[i] == search_term:
+            index.append(i)
+    return index
+
+
+print('============================================')
+print(return_index(list, 2))
+print('============================================')

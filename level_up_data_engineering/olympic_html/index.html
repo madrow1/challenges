@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+
+</head>
+
+<body>
+ 
+    <div class="container">
+        <nav>
+            <ul>
+                <li>Olympic Data Search</li>
+            </ul>
+        </nav>
+        <div class="row">
+            <input type="text" id="athlete" />
+        </div>
+    </div>
+
+    <div class="results" >
+        <details role="list open">
+            <summary aria-haspopup="listbox" role="button" disabled style="display: none;">
+                Dropdown as a button 1 
+            </summary>
+            <ul role="listbox">
+            </ul>
+        </details>
+        <div class="table" ></div>
+    </div>    
+    <script>
+        const search = document.getElementById('athlete');
+        const results = document.querySelector('ul[role="listbox"]');
+        const details = document.querySelector('details[open]');
+        function changedetails(e) {
+            const table = document.querySelector('.table');
+            const newtable = document.createElement('newtable');
+            if (table.childElementCount === 0) {
+                const tr = document.createElement('tr');
+                const headers = ['time', 'name', 'event date', 'dob', 'location'];
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    tr.appendChild(th);
+                });
+                newtable.appendChild(tr)
+            } else {
+                const dataRow = table.lastChild.remove()
+            }
+            const card = `
+            <article>
+                <header> ${e.name} </header>
+            </article>
+            `
+            table.innerHTML = card;
+            }
+            search.addEventListener('input', function (e) {
+                const searchInput = e.target.value;
+                if (searchInput < 2) {
+                    return
+                }
+                fetch('./?athlete=' + e.target.value)
+                .then(res => res.json())
+                .then(data => {
+                    results.innerHTML = '';
+                    data.forEach(function (item) {
+                        const lst = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.innerText = `${item.name}`;
+                        a.addEventListener('click', function (e) {
+                            results.innerHTML = '';
+                            changedetails(item)
+                        })
+                        lst.appendChild(a);
+                        results.appendChild(lst);
+                    })
+                })
+            })
+    </script>
+</body>
+
+</html>

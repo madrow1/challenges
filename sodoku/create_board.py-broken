@@ -1,0 +1,129 @@
+#%%
+import random
+import math 
+import sys 
+global count 
+save_row = []
+
+# Randomly calculates the contents of cells on the board
+def calc_cells(size):
+    count = 1 
+    row = []
+    # If the box is smaller than 9 cells then use this method
+    if size <= 9:
+        for i in range(0,size+1):
+            # Defines a random integer that should be placed in the cell, the int is between 1 and the total number of cells.
+            while count < 10:          
+                rand = random.randint(1,size)
+            # If the int is not already in the row list then add it to the list
+                if ('║ ' + str(rand) + ' ║ ') not in row:
+                    row.append('║ ' + str(rand) + ' ║ ')
+                    save_row.append(str(rand))
+                    count += 1
+            # If the int is already in the list add a space and the same formatting instead
+                else:
+                    row.append('║ ' + " " + ' ║ ')
+                    save_row.append(" ")
+                    count += 1
+            
+            else: 
+            # If the int is not already in the row list then add it to the list
+                    if ('║ ' + str(rand) + ' ║ ') not in row and calc_pos(rand,size) == True:
+                        row.append('║ ' + str(rand) + ' ║ ')
+                        save_row.append(str(rand))
+                        count += 1
+            # If the int is already in the list add a space and the same formatting instead
+                    elif ('║ ' + str(rand) + ' ║ ') not in row and calc_pos(rand,size) == True:
+                        row.append('║ ' + " " + ' ║ ')
+                        save_row.append(" ")
+                        count += 1
+                        calc_pos(rand,size)
+                    else:
+                        continue 
+
+        return row
+
+
+#%%
+def calc_pos(rand,size): 
+    exists = False
+    while count < 9:
+        exists = True
+        return exists
+    else:
+        print(count)
+        if str(rand) == save_row[count]:
+            print("rand is in test, rand is currently: " + str(rand) + " and count is " + str(count))
+            exists = False
+        elif str(rand) != save_row[count]:
+            print("rand is not in test, rand is currently: " + str(rand) + " and count is " + str(count))
+            exists = True
+    return exists
+
+#%%
+'''
+    elif size >= 10:
+        for i in range(size+1):
+            rand = random.randint(1,size)
+            if rand not in row: 
+                row.append('║ ' + str(rand) + ' ║') 
+            elif rand in row:
+                row.append(" ")
+        return ' '.join(i for i in row)
+'''
+# takes size as an argument, converts it into a list of numbers, and then returns that list joined
+def col_width(size):
+    if size <= 9: 
+        #for i in range(size+1):
+        return ''.join(calc_cells(size+1))
+    # If the requested number of rows/columns is greater than 10 it should be formatted differently so the board is easier to read
+    elif size >=10:
+        #for i in range(size+1):
+            # "{:02d}".format here means that all numbers are added to the gride with a leading 0
+        return ''.join("{:02d}".format(calc_cells(size)))
+def row_width(size):
+    row = []
+    # Extra is used to help calculate how long a row of - should be math.ceil(size / 2) takes the size variable, divides by 2 and then rounds up
+    extra = math.ceil(size / 2)
+    
+    # if size less than 9 use one calculation for how long a row of - should be, if longer than 10 same thing
+    if size <= 9: 
+        for i in range(size*3+extra):
+            row.append('⎯')
+        return ''.join(row)
+    elif size >= 10:
+        for i in range(size*3+extra*2+2):
+            row.append('⎯')
+        return ''.join(row)
+def calc_grid(size):
+    columns = []
+    # Checks that the size is not a prime number that can be divided into an equal grid
+    if (size) % 2 == 0 or (size) % 3 == 0 or (size) % 5 == 0:
+        for i in range(1,size*3,2):
+            columns.append(i)
+        return columns
+    # If it cant it throws an error
+    else:
+        print("A sodoku board of this size is not possible: " + str(size)) 
+        exit()       
+def print_grid(size):
+    grid_hieght = calc_grid(size)
+    grid_width = size
+
+    i = 1
+    for i in range(1,size*2+2):
+        if i in grid_hieght:
+            print(row_width(size))
+        else:
+            #row_count = int(i / 2)
+            #row_dict[str(row_count)] = col_width(size-1,row_count)
+            #for i in range(size): 
+                #if row_dict['i'].split('║ ║'):
+            print(col_width(size-1))
+    #print(row_dict['1'].split('║ ║'))
+print_grid(9)
+
+
+
+
+# %%
